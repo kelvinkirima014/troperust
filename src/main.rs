@@ -1,22 +1,13 @@
-use actix_web::{web, App, HttpRequest, HttpServer, HttpResponse,Responder};
+use actix_web::{Response, HttpRequest};
 async fn greet(req: HttpRequest) -> impl Responder {
     let name = req.match_info().get("name").unwrap_or("World");
     format!("Hello {}!", &name)
 }
 
+use troperust::run;
 #[actix_web::main]
-async fn main() -> std::io::Result<()> {
-    HttpServer::new(|| {
-        App::new()
-            .route("/health_check", web::get().to(health_check))
-            .route("/{name}", web::get().to(greet))
-    })
-    .bind("127.0.0.1:8000")?
-    .run()
-    .await
-}
+async fn main() -> std::io:: Result<()> {
+    run().await
+    }
 
-async fn health_check() -> impl Responder{
-    HttpResponse::Ok()
-}
 
