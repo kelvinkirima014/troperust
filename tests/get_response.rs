@@ -1,7 +1,6 @@
 #[tokio::test]
 async fn get_response_works(){
-	spawn_app().await.expect("Failed to spawn our app");
-
+	spawn_app();
 	let client = reqwest::Client::new();
 
 	let response = client
@@ -14,6 +13,7 @@ async fn get_response_works(){
 		assert_eq!(Some(0), response.content_length());
 }
 //launch app in background
-async fn spawn_app() -> std::io::Result<()> {
-	troperust::run().await
+fn spawn_app(){
+	let server = troperust::run().expect("Failed to bind address");
+	let _ = tokio::spawn(server);
 }
