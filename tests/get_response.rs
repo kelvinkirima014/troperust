@@ -14,6 +14,6 @@ async fn get_response_works(){
 }
 //launch app in background
 fn spawn_app(){
-	let server = troperust::run().expect("Failed to bind address");
+	let server = troperust::run("127.0.0.1:0").expect("Failed to bind address");
 	let _ = tokio::spawn(server);
 }

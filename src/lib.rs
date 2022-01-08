@@ -1,16 +1,17 @@
 use actix_web::{web, App, HttpServer, HttpResponse};
 use actix_web::dev::Server;
+use std::net::TcpListener;
 
 async fn get_response() -> HttpResponse {
 	HttpResponse::Ok().finish()
 }
 
-pub fn run(address: &str) -> Result<Server, std::io::Error> {
+pub fn run(listener: TcpListener) -> Result<Server, std::io::Error> {
 	let server = HttpServer::new(|| {
 		App::new()
 		.route("/get_response", web::get().to(get_response))
 	})
-	.bind("127.0.0.1:8000")?
+	.listen(listener)?
 	.run();
 	Ok(server)
 }
