@@ -5,6 +5,10 @@ use std::net::TcpListener;
 async fn get_response() -> HttpResponse {
 	HttpResponse::Ok().finish()
 }
+//return a 200 OK response
+async fn subscribe() -> HttpResponse {
+	HttpResponse::Ok().finish()
+}
 
 pub fn run(listener: TcpListener) -> Result<Server, std::io::Error> {
 	let server = HttpServer::new(|| {

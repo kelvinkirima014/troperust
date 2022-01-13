@@ -29,7 +29,7 @@ use wiremock::{Mock, ResponseTemplate};
 use wiremock::matchers::{method, path};
 #[tokio::test]
 async fn suscribe_returns_a_200_for_valid_form_data(){
-	//slet app = spawn_app().await;
+	//let app = spawn_app();
 	let app_address = spawn_app();
 	let client = reqwest::Client::new();
 
