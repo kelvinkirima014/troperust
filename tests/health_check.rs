@@ -1,12 +1,13 @@
 use std::io;
+use std::net::TcpListener;
 #[tokio::test]
 async fn health_check_works (){
-	spawn_app();
+	let address = spawn_app();
 	//Bring reqwest to perform HTTP requests against our app
 	let client = reqwest::Client::new();
 
 	let response = client
-		.get("http://127.0.0.1:8000/health_check")
+		.get(&format!("{}/health_check", &address))
 		.send()
 		.await
 		.expect("Failed to send request");
@@ -15,7 +16,13 @@ async fn health_check_works (){
 	assert_eq!(Some(0), response.content_length());
 }
 
-fn spawn_app() {
-	let server = troperust::run("127.0.0.1:8000").expect("failes to bind address");
+fn spawn_app() -> String{
+	let listener = TcpListener::bind("127.0.0.1:0")
+		.expect("failed to bind random port");
+	let port = listener.local_addr().unwrap().port();
+	let server = troperust::run(listener).expect("Failed tp bind address");
 	let _ = tokio::spawn(server);
+
+	//return app address to the caller
+	format!("http://127.0.0.1:{}", port)
 }
