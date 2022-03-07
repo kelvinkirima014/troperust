@@ -26,3 +26,17 @@ fn spawn_app() -> String{
 	//return app address to the caller
 	format!("http://127.0.0.1:{}", port)
 }
+
+#[tokio::test]
+async fn subsribe_returns_a_200_valid_form_data(){
+	let app_address = spawn_app();
+	let client = reqwest::Client::new();
+
+	Mock::given(path("/email"))
+	.and(method("POST"))
+	.respond_with(ResponseTemplate::new(200))
+	.mount(&app.email_server)
+	.await;
+
+	//Act
+}
