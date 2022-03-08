@@ -1,10 +1,10 @@
-use actix_web::{web, App, HttpRequest, HttpServer, HttpResponse, Responder};
+use actix_web::{web, App, HttpServer, HttpResponse, Responder};
 use std::io;
 use actix_web::dev::Server;
 use std::net::TcpListener;
 
-async fn health_check() -> impl Responder {
-    HttpResponse::Ok()
+async fn health_check() -> HttpResponse {
+    HttpResponse::Ok().finish()
 }
 
 pub fn run(listener: TcpListener) -> Result<Server, io::Error> {
