@@ -22,15 +22,19 @@ DB_PASSWORD="${POSTGRES_PASSWORD:=password}"
 DB_NAME="${POSTGRES_DB:=newsletter}"
 # Check if a custom port has been set, otherwise default to '5432'
 DB_PORT="${POSTGRES_PORT:=5432}"
-# Launch postgres using Docker
-docker run \
--e POSTGRES_USER=${DB_USER} \
--e POSTGRES_PASSWORD=${DB_PASSWORD} \
--e POSTGRES_DB=${DB_NAME} \
--p "${DB_PORT}":5432 \
--d postgres \
-postgres -N 1000
 
+#Allow to skip Docker if a dockerized postgres database is already running
+
+if [[ -z "${SKIP_DOCKER}"]]
+then
+   docker run \
+   -e POSTGRES_USER=${DB_USER} \
+   -e POSTGRES_PASSWORD=${DB_PASSWORD} \
+   -e POSTGRES_DB=${DB_NAME} \
+   -p "${DB_PORT}":5432 \
+   -d postgres \
+   postgres -N 1000
+fi
 #Force postgres to accept commands
 
 export PGPASSWORD="${DB_PASSWORD}"
@@ -45,3 +49,6 @@ done
 # Database URL 
 export DATABASE_URL=postgres://${DB_USER}:${DB_PASSWORD}@localhost:${DB_PORT}/${DB_NAME}
 sqlx database create
+sqlx migrate run
+
+>&2 echo "Postgress has been migrated, ready to fly!"
