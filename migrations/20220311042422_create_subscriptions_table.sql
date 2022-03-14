@@ -5,5 +5,5 @@ CREATE TABLE Subscriptions(
 	PRIMARY KEY (id),
 	email TEXT NOT NULL UNIQUE,
 	name TEXT NOT NULL,
-	subsribed_at timestampz NOT NULL
-);
+	subsribed_at timestamptz NOT NULL
+);  
