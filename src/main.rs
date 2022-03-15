@@ -1,4 +1,4 @@
-use troperust::run;
+use troperust::startup::run;
 use std::net::TcpListener;
 
 #[tokio::main]

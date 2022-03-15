@@ -1,6 +1,6 @@
 use std::io;
 use std::net::TcpListener;
-
+use troperust::startup::run;
 use wiremock::{MockServer, Mock, ResponseTemplate};
 use wiremock::matchers::{method, path};
 
@@ -24,7 +24,7 @@ fn spawn_app() -> String {
 	let listener = TcpListener::bind("127.0.0.1:0")
 		.expect("failed to bind random port");
 	let port = listener.local_addr().unwrap().port();
-	let server = troperust::run(listener).expect("Failed tp bind address");
+	let server = troperust::startup::run(listener).expect("Failed tp bind address");
 	let _ = tokio::spawn(server);
 
 	//return app address to the caller
