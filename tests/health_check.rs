@@ -38,7 +38,7 @@ async fn subsribe_returns_a_200_valid_form_data(){
 		.expect("Failed to read configuration");
 	let connection_string = configuration.database.connection_string();
 	//`PgConnection::connect` is not an inherent method of the struct!
-	let connection = PgConnection::connect(&connection_string)
+	let mut connection = PgConnection::connect(&connection_string)
 		.await
 		.expect("Failed to connect to Postgres");
 	let client = reqwest::Client::new();
