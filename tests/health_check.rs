@@ -1,8 +1,8 @@
-use std::io;
 use std::net::TcpListener;
-use troperust::startup::run;
-use wiremock::{MockServer, Mock, ResponseTemplate};
+use wiremock::{Mock, ResponseTemplate};
 use wiremock::matchers::{method, path};
+use sqlx::{PgConnection, Connection};
+use troperust::configuration::get_configuration;
 
 #[tokio::test]
 async fn health_check_works (){
@@ -34,6 +34,13 @@ fn spawn_app() -> String {
 #[tokio::test]
 async fn subsribe_returns_a_200_valid_form_data(){
 	let app_address = spawn_app();
+	let configuration = get_configuration()
+		.expect("Failed to read configuration");
+	let connection_string = configuration.database.connection_string();
+	//`PgConnection::connect` is not an inherent method of the struct!
+	let connection = PgConnection::connect(&connection_string)
+		.await
+		.expect("Failed to connect to Postgres");
 	let client = reqwest::Client::new();
 
 	Mock::given(path("/email"))
