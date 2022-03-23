@@ -7,17 +7,19 @@ use std::io;
 
 pub fn run(listener: TcpListener,
 	   connection: PgConnection
-	  ) -> Result<Server, io::Error> {
-	let server = HttpServer::new(|| {
-		App::new()
-		.route("/health_check", web::get().to(health_check))
-		.route("/subscriptions", web::post().to(subscribe))
-		//Register the connection as part of app state
-		.app_data(connection)
-	})
-		.listen(listener)?
-		.run();
-	
-	Ok(server)
+	) -> Result<Server, io::Error> {
+		let connection = web::Data::new(connection);
+		//capture connection from the surrounding environment
+		let server = HttpServer::new(move || {
+			App::new()
+			.route("/health_check", web::get().to(health_check))
+			.route("/subscriptions", web::post().to(subscribe))
+			//Register the connection as part of app state
+			.app_data(connection.clone())
+		})
+			.listen(listener)?
+			.run();
+		
+		Ok(server)
 
     }
