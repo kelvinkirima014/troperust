@@ -41,6 +41,7 @@ async fn subsribe_returns_a_200_valid_form_data(){
 	let mut connection = PgConnection::connect(&connection_string)
 		.await
 		.expect("Failed to connect to Postgres");
+	let client = reqwest::Client::new();
 	//assert
 	assert_eq!(200, response.status().as_u16());
 
@@ -52,7 +53,7 @@ async fn subsribe_returns_a_200_valid_form_data(){
 	assert_eq!(saved.email, "ursula_le_guin@gmail.com");
 	assert_eq!(saved.name, "le guin");
 
-	let client = reqwest::Client::new();
+	
 
 	Mock::given(path("/email"))
 		.and(method("POST"))
