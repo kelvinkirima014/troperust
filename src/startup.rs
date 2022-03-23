@@ -14,6 +14,7 @@ pub fn run(listener: TcpListener,
 		.route("/subscriptions", web::post().to(subscribe))
 		//Register the connection as part of app state
 		.app_data(connection)
+	})
 		.listen(listener)?
 		.run();
 	
