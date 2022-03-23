@@ -1,6 +1,7 @@
 use troperust::startup::run;
 use std::net::TcpListener;
 use troperust::configuration::get_configuration;
+use sqlx::{ Connection, PgConnection};
 
 #[tokio::main]
 async fn main() -> std::io::Result<()> {
