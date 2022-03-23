@@ -6,6 +6,7 @@ use sqlx::{ Connection, PgConnection};
 #[tokio::main]
 async fn main() -> std::io::Result<()> {
     //panic if we can't read configuration
+    
     let configuration = get_configuration().expect("Failed to read configuration");
     let connection = PgConnection::connect(&configuration.database.connection_string())
         .await
