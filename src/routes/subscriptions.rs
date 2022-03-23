@@ -1,4 +1,3 @@
-use serde::Deserialize;
 use actix_web::{HttpResponse, web};
 
 #[derive(serde::Deserialize)]
