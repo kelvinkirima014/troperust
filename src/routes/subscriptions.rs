@@ -1,5 +1,5 @@
 use actix_web::{HttpResponse, web};
-use sqlx::PgConnection;
+use sqlx::PgPool;
 use chrono::Utc;
 use uuid::Uuid;
 
@@ -12,7 +12,7 @@ pub struct FormData {
 pub async fn subscribe(
 	form: web::Form<FormData>,
 	//retrieving a connection from app state
-	connection: web::Data<PgConnection>,
+	pool: web::Data<PgConnection>,
 	) -> HttpResponse {
 		sqlx::query!(
 			r#"
@@ -28,6 +28,7 @@ pub async fn subscribe(
 			Utc::now()
 		)
 		//`get_ref` gets an immutable reference to PgConnection
-		.execute(connection.get_ref()).await;
+		.execute(pool.get_ref())
+		.await;
 		HttpResponse::Ok().finish()
 }
