@@ -10,11 +10,11 @@ pub struct FormData {
 }
 
 pub async fn subscribe(
-	_form: web::Form<FormData>,
+	form: web::Form<FormData>,
 	//retrieving a connection from app state
-	_connection: web::Data<PgConnection>
+	connection: web::Data<PgConnection>,
 	) -> HttpResponse {
-		sqlx::query(
+		sqlx::query!(
 			r#"
 			INSERT INTO subscriptions(
 
