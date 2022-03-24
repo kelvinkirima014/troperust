@@ -1,7 +1,6 @@
 use troperust::startup::run;
 use std::net::TcpListener;
 use troperust::configuration::get_configuration;
-use sqlx::{ Connection, PgConnection};
 use sqlx::PgPool;
 
 #[tokio::main]
