@@ -12,7 +12,7 @@ pub struct FormData {
 pub async fn subscribe(
 	form: web::Form<FormData>,
 	//retrieving a connection from app state
-	pool: web::Data<PgConnection>,
+	pool: web::Data<PgPool>,
 	) -> HttpResponse {
 		sqlx::query!(
 			r#"
